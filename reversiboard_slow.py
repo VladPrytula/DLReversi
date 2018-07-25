@@ -72,6 +72,7 @@ class ReversiBoard():
                              Point(5,4) : "white",
                              Point(5,5) : "black"}
 
+        # This should be extracted to the separate functions, since it is used during the game
         self.extended_placed_stones = set(itertools.chain.from_iterable([s.neighbours() for s in self.placed_stones.keys()]))
         self.available_positions = self.extended_placed_stones -set(self.placed_stones.keys())
 
