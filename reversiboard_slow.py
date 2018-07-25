@@ -72,13 +72,16 @@ class ReversiBoard():
                              Point(5,4) : "white",
                              Point(5,5) : "black"}
 
-        self.expanded_placed_set = list(itertools.chain.from_iterable(self.placed_stones.keys()))
-        self.available_positions = set(self.expanded_placed_set) - set(self.placed_stones.keys())
+        self.extended_placed_stones = set(itertools.chain.from_iterable([s.neighbours() for s in self.placed_stones.keys()]))
+        self.available_positions = self.extended_placed_stones -set(self.placed_stones.keys())
 
-        print("placed stones are {}".format(self.placed_stones))
-        print("placed stone positions are {}".format(list(self.placed_stones.keys())))
-        print("placed stone neighbours are {}".format([s.neighbours() for s in self.placed_stones.keys()]))
-        print("available places {}".format(set(itertools.chain.from_iterable([s.neighbours() for s in self.placed_stones.keys()])) - set(self.placed_stones.keys())))
+        #print("placed stones are {}".format(self.placed_stones))
+        #print("placed stone positions are {}".format(list(self.placed_stones.keys())))
+        #print("placed stone neighbours are {}".format([s.neighbours() for s in self.placed_stones.keys()]))
+        print("placed stone positions are {}".format(self.placed_stones))
+        print("placed stone and eighbours are {}".format(self.extended_placed_stones))
+        print("available places {}".format(self.available_positions))
+
 
                             
 
