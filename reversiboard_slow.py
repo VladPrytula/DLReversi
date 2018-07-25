@@ -1,5 +1,9 @@
+import itertools
 import copy
-from reversitypes import Player
+from reversitypes import Player, Point
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
 
 
 class Move():
@@ -49,7 +53,7 @@ class ReversiString():
 
 
 class ReversiBoard():
-    def __init__(self, num_rows, num_cols):
+    def __init__(self, num_rows=10, num_cols=10):
         self.num_rows = num_rows
         self.num_cols = num_cols
         """
@@ -58,7 +62,25 @@ class ReversiBoard():
         self.__grid = {}  # a dcitionary where we store stones
 
         # a set of available coord for stones
-        self.__available_positions = set()
+        # This is wrong. TODO: redo the whole thing.
+        #self.init_positions = list(itertools.chain.from_iterable([Point(4,4).neighbours(), 
+        #                                Point(5,5).neighbours(), 
+        #                                Point(4,5).neighbours(), 
+        #                                Point(5,4).neighbours()]))
+        self.placed_stones = {Point(4,4) : "white", 
+                             Point(4,5) : "black",
+                             Point(5,4) : "white",
+                             Point(5,5) : "black"}
+
+        self.expanded_placed_set = list(itertools.chain.from_iterable(self.placed_stones.keys()))
+        self.available_positions = set(self.expanded_placed_set) - set(self.placed_stones.keys())
+
+        print("placed stones are {}".format(self.placed_stones))
+        print("placed stone positions are {}".format(list(self.placed_stones.keys())))
+        print("placed stone neighbours are {}".format([s.neighbours() for s in self.placed_stones.keys()]))
+        print("available places {}".format(set(itertools.chain.from_iterable([s.neighbours() for s in self.placed_stones.keys()])) - set(self.placed_stones.keys())))
+
+                            
 
     def place_stone(self, player, point):
         assert self.is_on_grid(point)
@@ -66,19 +88,21 @@ class ReversiBoard():
         return False
 
     def is_on_grid(self, point):
+        logging.debug("point  ({}, {}) is on the grid".format(point.row, point.col))
         return 1 <= point.row <= self.num_rows and \
             1 <= point.col <= self.num_cols
 
     def can_be_placed(self, point):
-        if not self.occupied(point):
-            pass
-        return False
-
-    def occupied(self, point):
+        logging.debug("Placing  ({}, {})".format(point.row, point.col))
+        print(self.available_positions)
+        if point in self.available_positions: 
+            self.update_available_positions(point)
+            return True
         return False
 
     def check_connected_component(self, player, point):
         pass
 
-    def update_available_positions(self):
+    def update_available_positions(self, point):
+        logging.debug("checking available positions")
         return self
