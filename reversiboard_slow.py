@@ -52,20 +52,26 @@ class ReversiBoard():
     def __init__(self, num_rows, num_cols):
         self.num_rows = num_rows
         self.num_cols = num_cols
+        """
+        grid = {Point: color}
+        """
         self.__grid = {}  # a dcitionary where we store stones
 
-    def place_stone(self, plaer, point):
+        # a set of available coord for stones
+        self.__available_positions = set()
+
+    def place_stone(self, player, point):
         assert self.is_on_grid(point)
         assert self.can_be_placed(point)
-        pass
+        return False
 
     def is_on_grid(self, point):
         return 1 <= point.row <= self.num_rows and \
-            1 <= point.num_cols <= self.num_cols
+            1 <= point.col <= self.num_cols
 
     def can_be_placed(self, point):
         if not self.occupied(point):
-           pass
+            pass
         return False
 
     def occupied(self, point):
@@ -73,3 +79,6 @@ class ReversiBoard():
 
     def check_connected_component(self, player, point):
         pass
+
+    def update_available_positions(self):
+        return self
