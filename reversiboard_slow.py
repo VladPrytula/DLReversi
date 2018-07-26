@@ -61,52 +61,87 @@ class ReversiBoard():
         """
         self.__grid = {}  # a dcitionary where we store stones
 
-        # a set of available coord for stones
-        # This is wrong. TODO: redo the whole thing.
-        #self.init_positions = list(itertools.chain.from_iterable([Point(4,4).neighbours(), 
-        #                                Point(5,5).neighbours(), 
-        #                                Point(4,5).neighbours(), 
-        #                                Point(5,4).neighbours()]))
-        self.placed_stones = {Point(4,4) : "white", 
-                             Point(4,5) : "black",
-                             Point(5,4) : "white",
-                             Point(5,5) : "black"}
+        self.placed_stones = {Point(4, 4): Player.white,
+                              Point(4, 5): Player.black,
+                              Point(5, 4): Player.white,
+                              Point(5, 5): Player.black}
 
         # This should be extracted to the separate functions, since it is used during the game
-        self.extended_placed_stones = set(itertools.chain.from_iterable([s.neighbours() for s in self.placed_stones.keys()]))
-        self.available_positions = self.extended_placed_stones -set(self.placed_stones.keys())
+        self.extended_placed_stones = set()
+        self.available_positions = set()
+        self.update_extended_placed_stones()
+        self.update_available_positions()
 
-        #print("placed stones are {}".format(self.placed_stones))
-        #print("placed stone positions are {}".format(list(self.placed_stones.keys())))
-        #print("placed stone neighbours are {}".format([s.neighbours() for s in self.placed_stones.keys()]))
         print("placed stone positions are {}".format(self.placed_stones))
-        print("placed stone and eighbours are {}".format(self.extended_placed_stones))
+        print("placed stone and eighbours are {}".format(
+            self.extended_placed_stones))
         print("available places {}".format(self.available_positions))
-
-
-                            
 
     def place_stone(self, player, point):
         assert self.is_on_grid(point)
-        assert self.can_be_placed(point)
+        if self.can_be_placed(point):
+            self.placed_stones[point] = player
+            logging.debug("new placed stones {}".format(self.placed_stones))
+            self.update_available_positions()
+            self.update_placed_stones(player, point)
+            return True
         return False
 
     def is_on_grid(self, point):
-        logging.debug("point  ({}, {}) is on the grid".format(point.row, point.col))
+        logging.debug("point  ({}, {}) is on the grid".format(
+            point.row, point.col))
         return 1 <= point.row <= self.num_rows and \
             1 <= point.col <= self.num_cols
 
     def can_be_placed(self, point):
         logging.debug("Placing  ({}, {})".format(point.row, point.col))
         print(self.available_positions)
-        if point in self.available_positions: 
-            self.update_available_positions(point)
+        if point in self.available_positions:
             return True
         return False
 
     def check_connected_component(self, player, point):
         pass
 
-    def update_available_positions(self, point):
-        logging.debug("checking available positions")
-        return self
+    def update_available_positions(self):
+        logging.debug("updating available positions")
+        self.available_positions = self.extended_placed_stones - \
+            set(self.placed_stones.keys())
+
+    def update_extended_placed_stones(self):
+        self.extended_placed_stones = set(itertools.chain.from_iterable(
+            [s.neighbours() for s in self.placed_stones.keys()]))
+
+    def update_placed_stones(self, player, point):
+        # TODO: this thing looks BAD!
+        # from enum import Enum
+        # Directions = Enum('left',
+        #                   'right',
+        #                   'up',
+        #                   'down',
+        #                   'left-up',
+        #                   'left-down',
+        #                   'right-up',
+        #                   'right-down')
+
+        # def check_in_direction(direction):
+        #     for col in range()
+        #     pass
+
+        def check_horizontal():
+            """
+            check if among the stones on the board there exists one with the same 
+            y coordinat
+            """
+            print("check horizontal start")
+            horizontal_sorted_player = [x for x in sorted(self.placed_stones.items(), key=lambda k: k[0].col) if x[1] == player] 
+            horizontal_sorted_other = [x for x in sorted(self.placed_stones.items(), key=lambda k: k[0].col) if x[1] != player] 
+            print(horizontal_sorted_player)
+            print(horizontal_sorted_other)
+            print("check horizontal end")
+            pass
+
+        def check_vertical():
+            pass
+
+        check_horizontal()
