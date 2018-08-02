@@ -100,9 +100,6 @@ class ReversiBoard():
             return True
         return False
 
-    def check_connected_component(self, player, point):
-        pass
-
     def update_available_positions(self):
         logging.debug("updating available positions")
         self.available_positions = self.extended_placed_stones - \
@@ -113,6 +110,31 @@ class ReversiBoard():
             [s.neighbours() for s in self.placed_stones.keys()]))
 
     def update_placed_stones(self, player, point):
+        pass
+        def up():
+            pass
+
+        def down():
+            pass
+        
+        def left():
+            pass
+
+        def right():
+            pass
+        
+        def up_right():
+            pass
+
+        def up_left():
+            pass
+
+        def down_left():
+            pass
+
+        def down_right():
+            pass
+        
         # TODO: this thing looks BAD!
         # from enum import Enum
         # Directions = Enum('left',
@@ -128,20 +150,20 @@ class ReversiBoard():
         #     for col in range()
         #     pass
 
-        def check_horizontal():
-            """
-            check if among the stones on the board there exists one with the same 
-            y coordinat
-            """
-            print("check horizontal start")
-            horizontal_sorted_player = [x for x in sorted(self.placed_stones.items(), key=lambda k: k[0].col) if x[1] == player] 
-            horizontal_sorted_other = [x for x in sorted(self.placed_stones.items(), key=lambda k: k[0].col) if x[1] != player] 
-            print(horizontal_sorted_player)
-            print(horizontal_sorted_other)
-            print("check horizontal end")
-            pass
-
-        def check_vertical():
-            pass
-
-        check_horizontal()
+        # def check_horizontal():
+        #     """
+        #     check if among the stones on the board there exists one with the same 
+        #     y coordinat
+        #     """
+        #     print("check horizontal start")
+        #     horizontal_sorted_player = [x for x in sorted(
+        #         self.placed_stones.items(), key=lambda k: k[0].col) if x[1] == player]
+        #     horizontal_sorted_other = [x for x in sorted(
+        #         self.placed_stones.items(), key=lambda k: k[0].col) if x[1] != player]
+        #     print(horizontal_sorted_player)
+        #     print(horizontal_sorted_other)
+        #     print("check horizontal end")
+        #     """
+        #     TODO: here it might make sense to store sorted ony with coords, since it was split by color already
+        #     """
+        # check_horizontal()
