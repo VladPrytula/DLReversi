@@ -10,6 +10,3 @@ class TestPlayer(unittest.TestCase):
     def test_other_player(self):
         print(self.player.other)
         assert self.player.other == Player.white
-
-
-
