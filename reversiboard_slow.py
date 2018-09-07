@@ -110,6 +110,10 @@ class ReversiBoard():
             [s.neighbours() for s in self.placed_stones.keys()]))
 
     def update_placed_stones(self, player, point):
+        """TODO:
+            how can I effectively iterate if I represent the boards as a spartce matrix?!
+            Should I get the "direction" and then 
+        """
         pass
         def up():
             pass
