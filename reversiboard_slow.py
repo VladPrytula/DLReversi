@@ -41,17 +41,17 @@ class Move():
         return Move(is_resign=True)
 
 
-class ReversiString():
-    """
-    Perhaps while this is sutibale for GO, it is overcomplicated for Reversi
-    """
+# class ReversiString():
+#     """
+#     Perhaps while this is sutibale for GO, it is overcomplicated for Reversi
+#     """
 
-    def __init(self, color, stones, slots):
-        self.color = color
-        self.stones = set(stones)
-        self.slots = set(slots)
+#     def __init(self, color, stones, slots):
+#         self.color = color
+#         self.stones = set(stones)
+#         self.slots = set(slots)
 
-
+# this one should not be developed at this moment
 class ReversiBoard():
     def __init__(self, num_rows=10, num_cols=10):
         self.num_rows = num_rows

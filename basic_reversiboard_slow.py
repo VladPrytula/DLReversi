@@ -4,8 +4,12 @@ from reversitypes import Player, Point
 import logging
 import numpy as np
 
-fmt="%(funcName)s():%(lineno)i: %(message)s %(levelname)s"
+fmt = "%(funcName)s():%(lineno)i: %(message)s %(levelname)s"
 logging.basicConfig(level=logging.DEBUG, format=fmt)
+
+"""
+Currently Working with this Class
+"""
 
 
 class BasicReversiBoard():
@@ -14,9 +18,11 @@ class BasicReversiBoard():
         # "border" value
         self.num_rows = num_rows
         self.num_cols = num_cols
+        # we are actaully using padding here
         self.grid_array = np.zeros(
             (self.num_rows+1) * (self.num_cols+1), dtype=int).reshape(num_rows+1, num_cols+1)
 
+        # 8 is used to define the padded board
         self.grid_array[0, :] = 8
         self.grid_array[-1, :] = 8
         self.grid_array[:, 0] = 8
@@ -24,11 +30,16 @@ class BasicReversiBoard():
 
         # print(np.matrix(self.grid_array))
 
+        # setting up initial board configuration
+        # TODO: center of the board should not be hardcoded
+        # currently it is only for 8x8 board
         self.grid_array[3, 3] = Player.white.value
         self.grid_array[3, 4] = Player.black.value
         self.grid_array[4, 3] = Player.black.value
         self.grid_array[4, 4] = Player.white.value
 
+    # TODO: this shoudl be renamed so that the function returns bool and 
+    # idx, idy of the stones for turn directions
     def is_valid_place(self, point, player):
         """
         Here we check if in the neighbourhood there is at least one 
@@ -37,11 +48,13 @@ class BasicReversiBoard():
         # first we will check if the stone is on the board
         if point.row < 0 or point.row >= self.num_rows \
                 or point.col < 0 or point.col >= self.num_cols:
-            logging.debug("wrong point coords")
+            logging.debug(
+                "wrong point coords, attempting to place outside the board")
             return False
         # check if the slot is already occupied
-        logging.debug("checking the validity for {}".format(point))
-        logging.debug("the grid value is {}".format(self.grid_array[point.row, point.col]))
+        logging.debug("checking the validity for point {} and player {}".format(point, player))
+        logging.debug("the grid value is {}".format(
+            self.grid_array[point.row, point.col]))
         if self.grid_array[point.row, point.col] != 0:
             logging.debug("point {} is occupied".format(point))
             return False
@@ -57,20 +70,32 @@ class BasicReversiBoard():
         # get the coordinates of the "other"
         logging.debug("getting the indexes of the Other")
         print(np.matrix(self.grid_array))
-        logging.debug("the Other player color is {}".format(player.other)) 
-        logging.debug("the Other player color value is {}".format(player.other.value)) 
+        logging.debug("the Other player color is {}".format(player.other))
+        logging.debug(
+            "the Other player color value is {}".format(player.other.value))
         other_idx = np.where(self.grid_array == player.other.value)
         print(other_idx)
         print(self.grid_array[other_idx])
 
         # checking left
         if self.grid_array[point.row, point.col-1] != player.other.value:
+            logging.debug(
+                'there is no opponnent stone immediately to the left')
+            return False
+        else:
+            # get the coordinates of the other on the left
+            idy = np.where(self.grid_array[point.row, point.col:])[0][0]
+            logging.debug('first Other to the left is {}'.format(idy))
+            return True
+
+        # checking right
+        if self.grid_array[point.row, point.col+1] != player.other.value:
+            logging.debug(
+                'there is no opponnent stone immediately to the right')
             return False
         else:
             # get the coordinates of the other on the left
             pass
-
-        # checking right
         # checking up
         # checking down
         # checking left-up
