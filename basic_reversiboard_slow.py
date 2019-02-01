@@ -3,6 +3,8 @@ import copy
 from reversitypes import Player, Point
 import logging
 import numpy as np
+from pprint import pprint
+
 
 fmt = "%(funcName)s():%(lineno)i: %(message)s %(levelname)s"
 logging.basicConfig(level=logging.DEBUG, format=fmt)
@@ -40,79 +42,110 @@ class BasicReversiBoard():
 
     # TODO: this shoudl be renamed so that the function returns bool and
     # idx, idy of the stones for turn directions
-    def place_stone(self, point, player):
-        logging.debug("placing {} {}".format(point.row, point.col))
-        """
-        Here we check if in the neighbourhood there is at least one 
-        connected line of stone of the other color followed by our color
-        """
+
+    def _is_on_board(self, point, player) -> bool:
         # first we will check if the stone is on the board
         if point.row < 0 or point.row >= self.num_rows \
                 or point.col < 0 or point.col >= self.num_cols:
             logging.debug(
                 "wrong point coords, attempting to place outside the board")
             return False
-        # check if the slot is already occupied
+        else:
+            return True
+
+    def _is_occupied(self, point, player) -> bool:
         logging.debug(
             "checking the validity for point {} and player {}".format(point, player))
         logging.debug("the grid value is {}".format(
             self.grid_array[point.row, point.col]))
         if self.grid_array[point.row, point.col] != 0:
             logging.debug("point {} is occupied".format(point))
+            return True
+
+    def place_stone(self, point, player) -> bool:
+        logging.debug("placing {} {}".format(point.row, point.col))
+        """
+        Here we check if in the neighbourhood there is at least one 
+        connected line of stone of the other color followed by our color
+        """
+
+        neaby_other = {"left":False,"right":False,"down":False, "up":False} 
+
+        if not self._is_on_board(point, player):
             return False
+
+        if self._is_occupied(point, player):
+            return False
+
         # then in all directions check and rotate if possible
         """
         You can play a disc when you flank one or more opponents discs between your 
         new disc and any other of your own discs, in the same horizontal, 
         vertical or diagonal line. 
         The opponents discs that are flanked will be turned upside-down and change colour. 
-        This turning is called flipping. In figure 2, e5 will be flipped when 
+        This turning is called flipping. In figure 2, will be flipped when 
         playing a disc at f5.
         """
         # get the coordinates of the "other"
         logging.debug("getting the indexes of the Other")
-        print(np.matrix(self.grid_array))
+        pprint(self.grid_array)
         logging.debug("the Other player color is {}".format(player.other))
         logging.debug(
             "the Other player color value is {}".format(player.other.value))
         # TODO: we do not need other_idx
-        other_idx = np.where(self.grid_array == player.other.value)
-        logging.debug(other_idx)
-        logging.debug(self.grid_array[other_idx])
-        # TODO: we do not need other_idx
+        # other_idx = np.where(self.grid_array == player.other.value)
+        # logging.debug(other_idx)
+        # logging.debug(self.grid_array[other_idx])
+        # # TODO: we do not need other_idx
 
         # checking left
+        logging.info('checking left')
         if self.grid_array[point.row, point.col-1] != player.other.value:
             logging.debug(
                 'there is no opponnent stone immediately to the left')
-            return False
+        elif np.where(self.grid_array[point.row, :point.col]==player.value)[0].size == 0:
+            logging.debug('there are no our stones to the left')
+            logging.debug(np.where(self.grid_array[point.row, :point.col]==player.value)[0])
         else:
-            logging.info('there is an other stone to the left of {} {}'.format(
-                point.row, point.col-1))
-            # get the coordinates of the other on the left
-            idy = np.where(self.grid_array[point.row, point.col:])[0][0]
-            logging.debug('first Other to the left is {}'.format(idy))
-            # actually here we have to update the board
-            logging.info('reversing stones to the left')
-            # we place the stone at the same time
-            self.grid_array[point.row, idy:point.col+1] = player.value
-            print(np.matrix(self.grid_array))
-            return True
-
+            # get the index of the first stone of our color to the left
+            idY = np.where(self.grid_array[point.row, :point.col]==player.value)[0][0]
+            print(idY)
+            self.grid_array[point.row, idY:point.col+1] = player.value
+            neaby_other["left"] = True
+            
         # checking right
+        logging.info('checking right')        
         if self.grid_array[point.row, point.col+1] != player.other.value:
             logging.debug(
                 'there is no opponnent stone immediately to the right')
-            # TODO: actually it makes sense to update the state at this point of time
-            # TODO: the function should be renamed respecitvely
-            return False
+        elif np.where(self.grid_array[point.row, point.col+1:]==player.value)[0].size == 0:
+            logging.debug('there are no our stones to the right')
+            logging.debug(np.where(self.grid_array[point.row, point.col+1:]==player.value)[0])                
         else:
-            # get the coordinates of the other on the left
-            pass
-        # checking up
+            # get the index of the first stone of our color to the right
+            idY = np.where(self.grid_array[point.row, point.col+1:]==player.value)[0][0]
+            print(idY)
+            self.grid_array[point.row, point.col:point.col+idY+1] = player.value
+            neaby_other["right"] = True
+        
+        # checking down
+        logging.info('checking down')        
+        if self.grid_array[point.row+1, point.col] != player.other.value:
+            logging.debug(
+                'there is no opponnent stone immediately to the down')
+        elif np.where(self.grid_array[point.row+1:, point.col]==player.value)[0].size == 0:
+            logging.debug('there are no our stones to the down')
+            logging.debug(np.where(self.grid_array[point.row+1:, point.col]==player.value)[0])                
+        else:
+            # get the index of the first stone of our color to the down
+            idY = np.where(self.grid_array[point.row+1:, point.col]==player.value)[0][0]
+            print(idY)
+            self.grid_array[point.row:point.row+idY+1, point.col] = player.value
+            neaby_other["down"] = True        
         # checking down
         # checking left-up
         # checking right-up
         # checking left-down
         # checking right-down
-        return False
+
+        return any(value == True for value in neaby_other.values())
