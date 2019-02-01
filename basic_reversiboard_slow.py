@@ -28,7 +28,7 @@ class BasicReversiBoard():
         self.grid_array[:, 0] = 8
         self.grid_array[:, -1] = 8
 
-        # print(np.matrix(self.grid_array))
+        # logging.debug(np.matrix(self.grid_array))
 
         # setting up initial board configuration
         # TODO: center of the board should not be hardcoded
@@ -38,9 +38,10 @@ class BasicReversiBoard():
         self.grid_array[4, 3] = Player.black.value
         self.grid_array[4, 4] = Player.white.value
 
-    # TODO: this shoudl be renamed so that the function returns bool and 
+    # TODO: this shoudl be renamed so that the function returns bool and
     # idx, idy of the stones for turn directions
-    def is_valid_place(self, point, player):
+    def place_stone(self, point, player):
+        logging.debug("placing {} {}".format(point.row, point.col))
         """
         Here we check if in the neighbourhood there is at least one 
         connected line of stone of the other color followed by our color
@@ -52,7 +53,8 @@ class BasicReversiBoard():
                 "wrong point coords, attempting to place outside the board")
             return False
         # check if the slot is already occupied
-        logging.debug("checking the validity for point {} and player {}".format(point, player))
+        logging.debug(
+            "checking the validity for point {} and player {}".format(point, player))
         logging.debug("the grid value is {}".format(
             self.grid_array[point.row, point.col]))
         if self.grid_array[point.row, point.col] != 0:
@@ -73,9 +75,11 @@ class BasicReversiBoard():
         logging.debug("the Other player color is {}".format(player.other))
         logging.debug(
             "the Other player color value is {}".format(player.other.value))
+        # TODO: we do not need other_idx
         other_idx = np.where(self.grid_array == player.other.value)
-        print(other_idx)
-        print(self.grid_array[other_idx])
+        logging.debug(other_idx)
+        logging.debug(self.grid_array[other_idx])
+        # TODO: we do not need other_idx
 
         # checking left
         if self.grid_array[point.row, point.col-1] != player.other.value:
@@ -83,15 +87,24 @@ class BasicReversiBoard():
                 'there is no opponnent stone immediately to the left')
             return False
         else:
+            logging.info('there is an other stone to the left of {} {}'.format(
+                point.row, point.col-1))
             # get the coordinates of the other on the left
             idy = np.where(self.grid_array[point.row, point.col:])[0][0]
             logging.debug('first Other to the left is {}'.format(idy))
+            # actually here we have to update the board
+            logging.info('reversing stones to the left')
+            # we place the stone at the same time
+            self.grid_array[point.row, idy:point.col+1] = player.value
+            print(np.matrix(self.grid_array))
             return True
 
         # checking right
         if self.grid_array[point.row, point.col+1] != player.other.value:
             logging.debug(
                 'there is no opponnent stone immediately to the right')
+            # TODO: actually it makes sense to update the state at this point of time
+            # TODO: the function should be renamed respecitvely
             return False
         else:
             # get the coordinates of the other on the left
@@ -102,18 +115,4 @@ class BasicReversiBoard():
         # checking right-up
         # checking left-down
         # checking right-down
-
-        pass
-
-    def place_stone(self, point, player):
-        logging.debug("placing {} {}".format(point.row, point.col))
-        if not self.is_valid_place(point, player):
-            logging.debug("this is not a valid place")
-            logging.debug("the point is {} {}".format(point.row, point.col))
-            return False
-        self.grid_array[point.row, point.column] = player.value
-        self.update_board(point, player)
-        pass
-
-    def update_board(self, point, player):
-        pass
+        return False
