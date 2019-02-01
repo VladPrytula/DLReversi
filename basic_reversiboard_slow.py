@@ -70,7 +70,7 @@ class BasicReversiBoard():
         """
 
         neaby_other = {"left": False, "right": False,
-                       "down": False, "up": False, "up_left": False}
+                       "down": False, "up": False, "up_left": False, "up_right": False}
 
         if not self._is_on_board(point, player):
             return False
@@ -168,30 +168,65 @@ class BasicReversiBoard():
             self.grid_array[idY:point.row+1, point.col] = player.value
             neaby_other["up"] = True
 
-        # checking left-up
+        # checking up-left
+
+        """
+        ----- diagonals are wrong due to the incorrect iteration is loops
+        """
+
         logging.info('checking up-left')
+
         def _find_closest_stone_up_left()->(int, int):
             closest_stone_row, closest_stone_col = -2, -2
             for row in reversed(range(point.row-1)):
                 for col in reversed(range(point.col-1)):
                     if self.grid_array[row, col] == player.value:
                         return (row, col)
+                    break
             return (closest_stone_row, closest_stone_col)
 
         closest_stones = _find_closest_stone_up_left()
-        logging.debug("closest stones our stone checking up-left is {}".format(closest_stones))
+        logging.debug(
+            "closest stones our stone checking up-left is {}".format(closest_stones))
         if self.grid_array[point.row-1, point.col-1] != player.other.value:
             logging.debug(
-                'there is no opponnent stone immediately to the left-up')
+                'there is no opponnent stone immediately to the up-left')
         elif closest_stones == (-2, -2):
             logging.debug('there are no our stones to the up-left')
         else:
-            for row in range(closest_stones[0],point.row):
+            for row in range(closest_stones[0], point.row):
                 for col in range(closest_stones[1], point.col):
                     self.grid_array[row, col] = player.value
+                    break
             neaby_other["up_left"] = True
 
-        # checking right-up
+        # checking up-right
+        logging.info('checking up-right')
+
+        def _find_closest_stone_up_right()->(int, int):
+            closest_stone_row, closest_stone_col = -2, -2
+            for row in reversed(range(point.row-1)):
+                for col in range(point.col, self.num_cols+1):
+                    logging.debug("(row={}, col={})".format(row, col))
+                    if self.grid_array[row, col] == player.value:
+                        return (row, col)
+                    break
+            return (closest_stone_row, closest_stone_col)
+
+        closest_stones = _find_closest_stone_up_right()
+        logging.debug(
+            "closest stones our stone checking up-right is {}".format(closest_stones))
+        if self.grid_array[point.row-1, point.col+1] != player.other.value:
+            logging.debug(
+                'there is no opponnent stone immediately to the up-right')
+        elif closest_stones == (-2, -2):
+            logging.debug('there are no our stones to the up-right')
+        else:
+            for row in range(closest_stones[0], point.row):
+                for col in range(point.col, closest_stones[1]):
+                    self.grid_array[row, col] = player.value
+                    break
+            neaby_other["up_right"] = True
         # checking left-down
         # checking right-down
 

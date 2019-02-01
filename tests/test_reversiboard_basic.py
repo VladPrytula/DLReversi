@@ -88,3 +88,21 @@ class TestBasicBoard(unittest.TestCase):
         assert self.reversi_board.place_stone(
             Point(5, 5), Player.white) == True
         pprint(self.reversi_board.grid_array)
+
+
+    def test_place_stone_path2(self):
+        self.setUp()
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
+            Point(6, 3), Player.white) == False
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
+            Point(5, 2), Player.white) == False            
+        pprint(self.reversi_board.grid_array)            
+        assert self.reversi_board.place_stone(
+            Point(2, 4), Player.white) == True            
+        pprint(self.reversi_board.grid_array)          
+        assert self.reversi_board.place_stone(
+            Point(5, 2), Player.white) == True         
+        pprint(self.reversi_board.grid_array)          
+            
