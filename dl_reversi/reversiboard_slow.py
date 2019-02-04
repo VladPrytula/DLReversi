@@ -1,6 +1,6 @@
 import itertools
 import copy
-from reversitypes import Player, Point
+from .reversitypes import Player, Point
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -76,6 +76,16 @@ class ReversiBoard():
         print("placed stone and eighbours are {}".format(
             self.extended_placed_stones))
         print("available places {}".format(self.available_positions))
+
+    def get(self, point):
+        """Return the content of a point on the board.
+        Returns None if the point is empty, or a Player if there is a
+        stone on that point.
+        """
+        string = self.__grid.get(point)
+        if string is None:
+            return None
+        return string.color
 
     def place_stone(self, player, point):
         assert self.is_on_grid(point)

@@ -1,6 +1,6 @@
 import unittest
-from reversitypes import Player, Point
-from reversiboard_slow import ReversiBoard
+from ..reversitypes import Player, Point
+from ..reversiboard_slow import ReversiBoard
 
 
 class TestPlayer(unittest.TestCase):

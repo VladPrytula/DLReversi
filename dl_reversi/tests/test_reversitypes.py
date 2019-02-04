@@ -1,5 +1,5 @@
 import unittest
-from reversitypes import Player
+from ..reversitypes import Player
 
 
 class TestPlayer(unittest.TestCase):

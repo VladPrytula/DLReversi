@@ -1,6 +1,6 @@
 import unittest
-from reversitypes import Player, Point
-from basic_reversiboard_slow import BasicReversiBoard
+from ..reversitypes import Player, Point
+from ..basic_reversiboard_slow import BasicReversiBoard
 import logging
 import numpy as np
 from pprint import pprint
