@@ -22,7 +22,7 @@ class BasicReversiBoard():
         self.num_cols = num_cols
         # we are actaully using padding here
         self.grid_array = np.zeros(
-            (self.num_rows+1) * (self.num_cols+1), dtype=int).reshape(num_rows+1, num_cols+1)
+            (self.num_rows+2) * (self.num_cols+2), dtype=int).reshape(num_rows+2, num_cols+2)
 
         # 8 is used to define the padded board
         self.grid_array[0, :] = 8
@@ -35,10 +35,13 @@ class BasicReversiBoard():
         # setting up initial board configuration
         # TODO: center of the board should not be hardcoded
         # currently it is only for 8x8 board
-        self.grid_array[3, 3] = Player.white.value
-        self.grid_array[3, 4] = Player.black.value
-        self.grid_array[4, 3] = Player.black.value
         self.grid_array[4, 4] = Player.white.value
+        self.grid_array[4, 5] = Player.black.value
+        self.grid_array[5, 4] = Player.black.value
+        self.grid_array[5, 5] = Player.white.value
+        print(
+            'printing the board after init'
+        )
 
     # TODO: this shoudl be renamed so that the function returns bool and
     # idx, idy of the stones for turn directions

@@ -17,48 +17,34 @@ class TestBasicBoard(unittest.TestCase):
 
     def test_init_position(self):
         self.setUp()
-        assert self.reversi_board.grid_array[3, 3] == Player.white.value
+        assert self.reversi_board.grid_array[4, 4] == Player.white.value
         assert self.reversi_board.grid_array[0, 8] == 8
 
     def test_place_stone_path1(self):
         self.setUp()
-        # assert self.reversi_board.place_stone(
-        #     Point(1, 1), Player.white) == False
-        # assert self.reversi_board.place_stone(
-        #     Point(-1, 1), Player.white) == False
-        # assert self.reversi_board.place_stone(
-        #     Point(1, 8), Player.white) == False
-        # assert self.reversi_board.place_stone(
-        #     Point(1, 7), Player.white) == False
-        # assert self.reversi_board.place_stone(
-        #     Point(3, 4), Player.black) == False
-        # assert self.reversi_board.place_stone(
-        #     Point(1, 8), Player.white) == False
-        # assert self.reversi_board.place_stone(
-        #     Point(3, 2), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(3, 5), Player.white) == True
+            Point(4, 6), Player.white) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(3, 6), Player.black) == False
+            Point(4, 7), Player.black) == False
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(4, 5), Player.black) == True
+            Point(5, 6), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(6, 3), Player.black) == False
+            Point(7, 4), Player.black) == False
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(6, 5), Player.black) == False
+            Point(7, 6), Player.black) == False
         assert self.reversi_board.place_stone(
-            Point(2, 3), Player.black) == True
+            Point(3, 4), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(1, 3), Player.white) == False
+            Point(2, 4), Player.white) == False
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(3, 6), Player.black) == True
+            Point(4, 7), Player.black) == True
 
         pprint(self.reversi_board.grid_array)
 
@@ -71,92 +57,92 @@ class TestBasicBoard(unittest.TestCase):
         self.setUp()
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(6, 3), Player.white) == False
+            Point(7, 4), Player.white) == False
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
             Point(5, 3), Player.white) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(3, 2), Player.black) == True
+            Point(4, 3), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(2, 1), Player.white) == True
+            Point(3, 3), Player.white) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(5, 4), Player.black) == True
+            Point(6, 5), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(5, 5), Player.white) == True
+            Point(6, 6), Player.white) == True
         pprint(self.reversi_board.grid_array)
 
     def test_place_stone_path3(self):
         self.setUp()
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
+            Point(7, 4), Player.white) == False
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
             Point(6, 3), Player.white) == False
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(5, 2), Player.white) == False
+            Point(3, 5), Player.white) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(2, 4), Player.white) == True
-        pprint(self.reversi_board.grid_array)
-        assert self.reversi_board.place_stone(
-            Point(5, 2), Player.white) == True
+            Point(6, 3), Player.white) == True
         pprint(self.reversi_board.grid_array)
 
     def test_place_stone_path4(self):
         self.setUp()
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
+            Point(7, 4), Player.white) == False
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
             Point(6, 3), Player.white) == False
-        pprint(self.reversi_board.grid_array)
-        assert self.reversi_board.place_stone(
-            Point(5, 2), Player.white) == False
-        pprint(self.reversi_board.grid_array)
-        assert self.reversi_board.place_stone(
-            Point(2, 4), Player.white) == True
-        pprint(self.reversi_board.grid_array)
-        assert self.reversi_board.place_stone(
-            Point(2, 5), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
             Point(3, 5), Player.white) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(4, 5), Player.black) == True
+            Point(3, 6), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(5, 6), Player.white) == True
+            Point(4, 6), Player.white) == True
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
+            Point(5, 6), Player.black) == True
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
+            Point(6, 7), Player.white) == True
         pprint(self.reversi_board.grid_array)
 
-    def test_place_stone_path4(self):
+    def test_place_stone_path5(self):
         self.setUp()
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
+            Point(7, 4), Player.white) == False
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
             Point(6, 3), Player.white) == False
-        pprint(self.reversi_board.grid_array)
-        assert self.reversi_board.place_stone(
-            Point(5, 2), Player.white) == False
-        pprint(self.reversi_board.grid_array)
-        assert self.reversi_board.place_stone(
-            Point(2, 4), Player.white) == True
-        pprint(self.reversi_board.grid_array)
-        assert self.reversi_board.place_stone(
-            Point(2, 5), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
             Point(3, 5), Player.white) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(4, 5), Player.black) == True
+            Point(3, 6), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(5, 6), Player.white) == True
+            Point(4, 6), Player.white) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(4, 6), Player.black) == True
+            Point(5, 6), Player.black) == True
         pprint(self.reversi_board.grid_array)
         assert self.reversi_board.place_stone(
-            Point(2, 3), Player.black) == True
+            Point(6, 7), Player.white) == True
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
+            Point(5, 7), Player.black) == True
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
+            Point(3, 4), Player.black) == True
         pprint(self.reversi_board.grid_array)
