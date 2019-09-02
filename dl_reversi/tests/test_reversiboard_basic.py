@@ -20,6 +20,15 @@ class TestBasicBoard(unittest.TestCase):
         assert self.reversi_board.grid_array[4, 4] == Player.white.value
         assert self.reversi_board.grid_array[0, 8] == 8
 
+
+    def test_place_stone_path1(self):
+        self.setUp()
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
+           Point(4, 6), Player.white) == True
+
+        pprint(self.reversi_board.grid_array)
+""" 
     def test_place_stone_path1(self):
         self.setUp()
         pprint(self.reversi_board.grid_array)
@@ -146,3 +155,4 @@ class TestBasicBoard(unittest.TestCase):
         assert self.reversi_board.place_stone(
             Point(3, 4), Player.black) == True
         pprint(self.reversi_board.grid_array)
+ """

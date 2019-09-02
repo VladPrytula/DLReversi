@@ -14,7 +14,7 @@ def main():
         dl_reversi.reversitypes.Player.white: naive.RandomBot(),
     }
     while not game.is_over():
-        time.sleep(3)
+        time.sleep(1)
 
         print(chr(27) + "[2J")
         # print(chr(27))

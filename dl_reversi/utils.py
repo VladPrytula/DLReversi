@@ -3,8 +3,8 @@ from . import reversitypes
 COLS = 'ABCDEFGHJKLMNOPQRST'
 STONE_TO_CHAR = {
     None: ' . ',
-    reversitypes.Player.black: ' x ',
-    reversitypes.Player.white: ' o ',
+    reversitypes.Player.black: ' B ',
+    reversitypes.Player.white: ' W ',
 }
 
 
@@ -16,6 +16,11 @@ def print_move(player, move):
     else:
         move_str = '%s%d' % (COLS[move.point.col - 1], move.point.row)
     print('%s %s' % (player, move_str))
+
+def point_from_cords(coords):
+    col = COLS.index(coords[0]) + 1
+    row = int(coords[1:])
+    return reversitypes.Point(row, col)
 
 
 def print_board(board):
