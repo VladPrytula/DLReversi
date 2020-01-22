@@ -48,8 +48,8 @@ class BasicReversiBoard():
 
     def _is_on_board(self, point, player) -> bool:
         # first we will check if the stone is on the board
-        if point.row < 0 or point.row >= self.num_rows \
-                or point.col < 0 or point.col >= self.num_cols:
+        if point.row < 0 or point.row > self.num_rows \
+                or point.col < 0 or point.col > self.num_cols:
             logging.debug(
                 "wrong point coords, attempting to place outside the board")
             return False
@@ -328,9 +328,11 @@ class BasicReversiBoard():
                        "down": False, "up": False, "up_left": False, "up_right": False, "down_left": False}
 
         if not self._is_on_board(point, player):
+            logging.debug("not on board")
             return False
 
         if self._is_occupied(point, player):
+            logging.debug("occupied")
             return False
 
         # checking left
