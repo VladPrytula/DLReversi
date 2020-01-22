@@ -71,15 +71,18 @@ class TestBasicBoard(unittest.TestCase):
                 [8, 1, -1, -1, -1, -1, -1, -1, 0, 8],
                 [8, 1, -1, -1, -1, -1, -1, -1, 0, 8],
                 [8, 1, -1, -1, -1, -1, -1, -1, 0, 8],
-                [8, 1, -1, -1, -1, -1, -1, -1, 0, 8],
                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
             ]
         )
 
         pprint(self.reversi_board.grid_array)
-        assert self.reversi_board.grid_array[1,8] == 0
+        assert self.reversi_board.grid_array[1, 8] == 0
         assert self.reversi_board.place_stone(
             Point(1, 8), Player.black) == True
+        pprint(self.reversi_board.grid_array)
+
+        assert self.reversi_board.place_stone(
+            Point(8, 8), Player.black) == True
         pprint(self.reversi_board.grid_array)
 
 
