@@ -24,7 +24,7 @@ def point_from_cords(coords):
 
 
 def print_board(board):
-    for row in range(board.num_rows, 0, -1):
+    for row in range(0, board.num_rows): #, 0, -1):
         bump = " " if row <= 9 else ""
         line = []
         for col in range(1, board.num_cols+1):

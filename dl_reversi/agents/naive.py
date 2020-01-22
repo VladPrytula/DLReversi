@@ -14,7 +14,7 @@ class RandomBot(Agent):
                 candidate_point = Point(row=row, col=col)
                 if game_state.is_valid_move(Move.play(candidate_point)):
                     candidates.append(candidate_point)
-
+        print(candidates)
         if not candidates:
             return Move.pass_turn()
         return Move.play(random.choice(candidates)) #here we actually do a random choice

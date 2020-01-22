@@ -60,7 +60,7 @@ class TestBasicBoard(unittest.TestCase):
         #  2  B  W  W  W  W  W  W  .
         #  1  B  .  .  .  .  .  .  .
         #     A  B  C  D  E  F  G  H
-        self.reversi_board.grid_array = np.array(
+        """      self.reversi_board.grid_array = np.array(
             [
                 [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
                 [8, 1, -1, -1, -1, -1, -1, -1, 0, 8],
@@ -85,6 +85,93 @@ class TestBasicBoard(unittest.TestCase):
             Point(8, 8), Player.black) == True
         pprint(self.reversi_board.grid_array)
 
+    def test_convert_down(self):
+        self.setUp()
+        self.reversi_board.grid_array = np.array(
+            [
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                [8, 0, 0, 0, 0, 0, 0, 0, 0, 8],
+                [8, 0, 0, 0, 1, 1, 0, 0, 0, 8],
+                [8, 0, 0, 1, 0, 1, 0, 0, 0, 8],
+                [8, 0, 1, 0, 0, 1, 0, 0, 0, 8],
+                [8,-1, 0, 0, 0, 1, 0, 0, 0, 8],
+                [8, 0, 0, 0, 0, 1, 0, 0, 0, 8],
+                [8, 0, 0, 0, 0, 1, 0, 0, 0, 8],
+                [8, 0, 0, 1, 1, 1, 1, 0, 0, 8],
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+            ]
+        )
+
+        assert self.reversi_board.place_stone(
+            Point(1, 5), Player.white) == True
+        pprint(self.reversi_board.grid_array)
+
+
+        self.reversi_board.grid_array = np.array(
+            [
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                [8, 0, 0, 0, 0, 0, 0, 0, 0, 8],
+                [8, 0, 0, 0, 1, 1, 0, 0, 0, 8],
+                [8, 0, 0, 1, 0, 1, 0, 0, 0, 8],
+                [8, 0, 1, 0, 0, 1, 0, 0, 0, 8],
+                [8,-1, 0, 0, 0, 1, 0, 0, 0, 8],
+                [8, 0, 0, 0, 0, 1, 0, 0, 0, 8],
+                [8, 0, 0, 0, 0, 1, 0, 0, 0, 8],
+                [8, 0, 0, 1, 1,-1, 1, 0, 0, 8],
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+            ]
+        )
+        assert self.reversi_board.place_stone(
+            Point(1, 5), Player.white) == True
+        pprint(self.reversi_board.grid_array)
+        """
+        self.reversi_board.grid_array = np.array(
+            [
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8],
+                [8, 0, 0, 0, 0, 0, 0, 0, 0, 8],
+                [8, 0, 0, 0, 1, 1, 0, 0, 0, 8],
+                [8, 0, 0, 0, 0, 1, 0, 0, 0, 8],
+                [8, 0, 1, 0, 0, 0, 0, 0, 0, 8],
+                [8,-1, 0, 0, 0, 0, 0, 0, 0, 8],
+                [8, 0, 0, 0, 0, 0, 0, 0, 0, 8],
+                [8, 0, 0, 0, 0, 1, 0, 0, 0, 8],
+                [8, 0, 0, 1, 1,-1, 1, 0, 0, 8],
+                [8, 8, 8, 8, 8, 8, 8, 8, 8, 8]
+            ]
+        )
+        pprint(self.reversi_board.grid_array)
+        assert self.reversi_board.place_stone(
+            Point(1, 5), Player.white) == True
+        pprint(self.reversi_board.grid_array)
+
+
+"""
+Player.black E2
+ 0  .  .  .  .  .  .  .  . 
+ 1  .  .  .  .  .  .  .  . 
+ 2  .  .  .  .  B  .  .  . 
+ 3  .  .  .  .  B  .  B  . 
+ 4  .  .  B  B  B  W  B  . 
+ 5  .  .  .  B  B  .  W  . 
+ 6  .  .  .  .  B  .  .  W 
+ 7  .  .  .  .  .  .  .  . 
+    A  B  C  D  E  F  G  H
+Player.white
+bot is working
+[Point(row=2, col=4), Point(row=2, col=7), Point(row=2, col=8), Point(row=4, col=2), Point(row=4, col=8), Point(row=5, col=3), Point(row=6, col=4)]
+bot is working
+Point(row=6, col=4)
+Player.white D6
+ 0  .  .  .  .  .  .  .  . 
+ 1  .  .  .  .  .  .  .  . 
+ 2  .  .  .  .  B  .  .  . 
+ 3  .  .  .  .  B  .  B  . 
+ 4  .  .  B  B  B  W  B  . 
+ 5  .  .  .  B  W  .  W  . 
+ 6  .  .  .  W  W  W  W  W 
+ 7  .  .  .  .  .  .  .  . 
+    A  B  C  D  E  F  G  H
+"""
 
 """ 
     def test_place_stone_path1(self):
