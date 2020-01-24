@@ -7,7 +7,8 @@ import numpy as np
 
 
 fmt = "%(funcName)s():%(lineno)i: %(message)s %(levelname)s"
-logging.basicConfig(level=logging.INFO, format=fmt)
+#logging.basicConfig(level=logging.INFO, format=fmt)
+logging.basicConfig(level=logging.DEBUG, format=fmt)
 
 """
 Currently Working with this Class
@@ -65,7 +66,7 @@ class BasicReversiBoard():
             logging.debug("point {} is occupied".format(point))
             return True
 
-    def get(self, point)->Player:
+    def get(self, point) -> Player:
         """Return the content of a point on the board.
         Returns None if the point is empty, or a Player if there is a
         stone on that point.
@@ -117,56 +118,83 @@ class BasicReversiBoard():
 
         # checking left
         logging.debug('checking left')
+        # get the index of the first stone of our color to the left if any
+        idY = None
+        if len(np.where(self.grid_array[point.row, :point.col] == player.value)[0]) > 0:
+            idY = np.where(
+                self.grid_array[point.row, :point.col] == player.value)[0][0]
+        # print(idY)
         if self.grid_array[point.row, point.col-1] != player.other.value:
             logging.debug(
                 'there is no opponnent stone immediately to the left')
-        elif np.where(self.grid_array[point.row, :point.col] == player.value)[0].size == 0:
+            neaby_other["left"] = False
+        # we must take care of the case when between the tiles there are empty slots
+        # in this case we should not flip
+        elif not idY:
             logging.debug('there are no our stones to the left')
             logging.debug(
                 np.where(self.grid_array[point.row, :point.col] == player.value)[0])
-        else:
-            # get the index of the first stone of our color to the left
-            idY = np.where(
-                self.grid_array[point.row, :point.col] == player.value)[0][0]
-            # print(idY)
+        elif idY and not np.isin(0, self.grid_array[point.row, idY:point.col]):
             self.grid_array[point.row, idY:point.col+1] = player.value
             neaby_other["left"] = True
+            logging.debug("the nearest stone to the left is {}".format(idY))
+            logging.debug("the array to the left is".format(idY))
+        else:
+            neaby_other["left"] = False
 
         # checking right
         logging.debug('checking right')
+        # get the index of the first stone of our color to the left
+        idY = None
+        if len(np.where(self.grid_array[point.row, point.col+1:] == player.value)[0]) > 0:
+            logging.debug("indeces of our color to the right are {}".format(np.where(
+                self.grid_array[point.row, point.col+1:] == player.value)))
+            logging.debug(self.grid_array[point.row, point.col+1:])
+            idY = np.where(
+                self.grid_array[point.row, point.col+1:] == player.value)[0][0]
+            logging.debug("right idY is {}".format(idY))
+            logging.debug(self.grid_array[point.row, point.col+1:point.col+1+idY])
+        # print(idY)
         if self.grid_array[point.row, point.col+1] != player.other.value:
             logging.debug(
                 'there is no opponnent stone immediately to the right')
-        elif np.where(self.grid_array[point.row, point.col+1:] == player.value)[0].size == 0:
+        elif not idY:
             logging.debug('there are no our stones to the right')
             logging.debug(
                 np.where(self.grid_array[point.row, point.col+1:] == player.value)[0])
-        else:
-            # get the index of the first stone of our color to the right
-            idY = np.where(
-                self.grid_array[point.row, point.col+1:] == player.value)[0][0]
-            # print(idY)
+        elif idY and not np.isin(0, self.grid_array[point.row,
+                                                    point.col+1:point.col+1+idY]):
+            logging.debug("we are converting to the right from {} to {}".format(
+                point.col, point.col+idY))
             self.grid_array[point.row,
                             point.col:point.col+idY+1] = player.value
             neaby_other["right"] = True
+        else:
+            neaby_other["right"] = False
 
         # checking down
         logging.debug('checking down')
+        idX = None
+        if np.where(self.grid_array[point.row+1:, point.col] == player.value)[0].size > 0:
+            idX = np.where(
+                self.grid_array[point.row+1:, point.col] == player.value)[0][0]
         if self.grid_array[point.row+1, point.col] != player.other.value:
             logging.debug(
                 'there is no opponnent stone immediately to the down')
-        elif np.where(self.grid_array[point.row+1:, point.col] == player.value)[0].size == 0:
+        elif not idX:
             logging.debug('there are no our stones to the down')
             logging.debug(
                 np.where(self.grid_array[point.row+1:, point.col] == player.value)[0])
-        else:
+        elif idX and not np.isin(0, idX):
             # get the index of the first stone of our color to the down
             idY = np.where(
                 self.grid_array[point.row+1:, point.col] == player.value)[0][0]
-            # print(idY)
             self.grid_array[point.row:point.row +
                             idY+1, point.col] = player.value
             neaby_other["down"] = True
+        else:
+            neaby_other["down"] = False
+            
         # checking up
         logging.debug('checking up')
         if self.grid_array[point.row-1, point.col] != player.other.value:
@@ -188,7 +216,7 @@ class BasicReversiBoard():
 
         logging.debug('checking up-left')
 
-        def _find_closest_stone_up_left()->(int, int):
+        def _find_closest_stone_up_left() -> (int, int):
             closest_stone_row, closest_stone_col = -2, -2
             row = point.row-1
             col = point.col-1
@@ -222,7 +250,7 @@ class BasicReversiBoard():
         # checking up-right
         logging.debug('checking up-right')
 
-        def _find_closest_stone_up_right()->(int, int):
+        def _find_closest_stone_up_right() -> (int, int):
             closest_stone_row, closest_stone_col = -2, -2
             row = point.row-1
             col = point.col+1
@@ -257,7 +285,7 @@ class BasicReversiBoard():
         # checking left-down
         logging.debug('checking down-left')
 
-        def _find_closest_stone_down_left()->(int, int):
+        def _find_closest_stone_down_left() -> (int, int):
             closest_stone_row, closest_stone_col = -2, -2
             row = point.row+1
             col = point.col-1
@@ -289,7 +317,7 @@ class BasicReversiBoard():
         # checking right-down
         logging.debug('checking down-right')
 
-        def _find_closest_stone_down_right()->(int, int):
+        def _find_closest_stone_down_right() -> (int, int):
             closest_stone_row, closest_stone_col = -2, -2
             row = point.row+1
             col = point.col+1
@@ -391,7 +419,7 @@ class BasicReversiBoard():
 
         logging.debug('checking up-left')
 
-        def _find_closest_stone_up_left()->(int, int):
+        def _find_closest_stone_up_left() -> (int, int):
             closest_stone_row, closest_stone_col = -2, -2
             row = point.row-1
             col = point.col-1
@@ -418,7 +446,7 @@ class BasicReversiBoard():
         # checking up-right
         logging.debug('checking up-right')
 
-        def _find_closest_stone_up_right()->(int, int):
+        def _find_closest_stone_up_right() -> (int, int):
             closest_stone_row, closest_stone_col = -2, -2
             row = point.row-1
             col = point.col+1
@@ -445,7 +473,7 @@ class BasicReversiBoard():
         # checking left-down
         logging.debug('checking down-left')
 
-        def _find_closest_stone_down_left()->(int, int):
+        def _find_closest_stone_down_left() -> (int, int):
             closest_stone_row, closest_stone_col = -2, -2
             row = point.row+1
             col = point.col-1
@@ -470,7 +498,7 @@ class BasicReversiBoard():
         # checking right-down
         logging.debug('checking down-right')
 
-        def _find_closest_stone_down_right()->(int, int):
+        def _find_closest_stone_down_right() -> (int, int):
             closest_stone_row, closest_stone_col = -2, -2
             row = point.row+1
             col = point.col+1
